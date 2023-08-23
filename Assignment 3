@@ -1,0 +1,47 @@
+Write a Rust program that includes a generic HashMap struct and a trait that defines a method for sorting the elements in the map by their key values. Your program should include the following:
+
+A generic HashMap struct that takes two type parameters and implements the SortByKey trait.
+
+A trait called SortByKey that defines a method for sorting the elements in the map by their key values.
+
+An implementation of the SortByKey trait for the HashMap struct. This implementation should sort the elements in the map by their key values in ascending order.
+
+A main function that creates a new instance of your HashMap struct, adds several key-value pairs to it, and then sorts the elements in the map by their keys.
+
+Your program should compile without errors and produce the expected output. Be sure to include comments to explain your code and how each element of your program works.use std::collections::HashMap;
+
+// Define the trait
+trait SortByKey<K, V> {
+    fn sort_by_key(&self) -> Vec<(&K, &V)>;
+}
+
+// Implement the trait for HashMap
+impl<K, V> SortByKey<K, V> for HashMap<K, V>
+where
+    K: Ord,
+{
+    fn sort_by_key(&self) -> Vec<(&K, &V)> {
+        let mut sorted_pairs: Vec<(&K, &V)> = self.iter().collect();
+        sorted_pairs.sort_by(|(key1, _), (key2, _)| key1.cmp(key2));
+        sorted_pairs
+    }
+}
+
+fn main() {
+    // Create a new HashMap instance
+    let mut my_map: HashMap<i32, &str> = HashMap::new();
+
+    // Add key-value pairs
+    my_map.insert(3, "apple");
+    my_map.insert(1, "banana");
+    my_map.insert(2, "orange");
+
+    // Print the original map
+    println!("Original Map: {:?}", my_map);
+
+    // Sort the map by key using the trait method
+    let sorted_pairs = my_map.sort_by_key();
+
+    // Print the sorted map
+    println!("Sorted Map: {:?}", sorted_pairs);
+}
